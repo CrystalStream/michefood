@@ -6,7 +6,9 @@ const placeSchema = new mongoose.Schema({
   },
   description: {
     type: String
-  }
+  },
+  images: [String],
+  facebookUrl: String
 })
 
 const Place = mongoose.model('Place', placeSchema)
