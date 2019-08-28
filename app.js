@@ -3,8 +3,11 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
-const indexRouter = require('./routes/index')
-const usersRouter = require('./routes/users')
+// Init env vars
+require('dotenv').config()
+
+const placesRouter = require('./routes/api/places')
+const dailyTopRouter = require('./routes/api/dailyTop')
 
 const app = express()
 
@@ -14,7 +17,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/api/places', placesRouter)
+app.use('/api/daily', dailyTopRouter)
 
 module.exports = app
