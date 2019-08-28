@@ -1,7 +1,7 @@
 /**
 * PlacesController
 */
-const debug = require('debug')('michefood:ctrl:places')
+const debug = require('debug')('michefood:ctrl:places-ctrl')
 const models = require('../db/database').models
 
 /**

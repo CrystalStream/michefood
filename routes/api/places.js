@@ -4,7 +4,7 @@
 const express = require('express')
 const router = express.Router()
 
-const PlacesController = require('../controllers/PlacesController')
+const PlacesController = require('../../controllers/PlacesController')
 
 // Index route
 router.get('/', PlacesController.index)
