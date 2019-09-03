@@ -11,7 +11,11 @@ const dailyTopRouter = require('./routes/api/dailyTop')
 
 const app = express()
 
-app.use(logger('dev'))
+// Dont log for test
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger('combined'))
+}
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())

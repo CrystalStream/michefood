@@ -11,7 +11,7 @@ const models = require('../db/database').models
  * @returns {Places[]} data
  */
 function index (_, res) {
-  return models.PlacesModel.find({})
+  return models.PlaceModel.find({})
     .then(function (data) {
       res.json(data)
     })
@@ -22,13 +22,31 @@ function index (_, res) {
 }
 
 /**
+ * Return one place
+ * @param {req} _
+ * @param {res} res
+ * @returns {Places} data
+ */
+function find (req, res) {
+  const { id } = req.params
+  return models.PlaceModel.findOne({ _id: id })
+    .then(function (data) {
+      res.json(data)
+    })
+    .catch(function (err) {
+      debug('Error - PlacesController@find: ', err)
+      res.json({ message: 'Error on find place', error: err })
+    })
+}
+
+/**
  * Create a new place
  * @param {*} req
  * @param {*} res
  * @returns {Place} data
  */
 function create (req, res) {
-  return models.PlacesModel.create(req.body)
+  return models.PlaceModel.create(req.body)
     .then(function (data) {
       res.json(data)
     })
@@ -45,8 +63,8 @@ function create (req, res) {
  * @returns {Place} data
  */
 function update (req, res) {
-  const { id } = req.body
-  return models.PlacesModel.updateOne({ _id: id }, { ...req.body })
+  const { id } = req.params
+  return models.PlaceModel.updateOne({ _id: id }, { ...req.body })
     .then(function (data) {
       res.json(data)
     })
@@ -58,6 +76,7 @@ function update (req, res) {
 
 module.exports = {
   index,
+  find,
   create,
   update
 }

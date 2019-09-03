@@ -1,5 +1,5 @@
-const PlacesModel = require('./Places')
+const PlaceModel = require('./Place')
 
 module.exports = {
-  PlacesModel
+  PlaceModel
 }

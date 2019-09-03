@@ -1,9 +1,18 @@
 const mongoose = require('mongoose')
 const models = require('./models')
 
-const connectDb = function () {
-  return mongoose.connect(process.env.DATABASE_URL)
+const connectDB = function (url) {
+  dbUrl = url || process.env.DATABASE_URL
+  return mongoose.connect(dbUrl, { useNewUrlParser: true })
 }
 
-module.exports = connectDb
+const disconnectDB = async function() {
+  await mongoose.connection.close()
+}
+
+module.exports = {
+  connect: connectDB,
+  disconnect: disconnectDB
+}
+
 module.exports.models = models
