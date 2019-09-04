@@ -7,7 +7,7 @@ const logger = require('morgan')
 require('dotenv').config()
 
 const placesRouter = require('./routes/api/places')
-const dailyTopRouter = require('./routes/api/dailyTop')
+const botRouter = require('./routes/api/bot')
 
 const app = express()
 
@@ -22,6 +22,6 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api/places', placesRouter)
-app.use('/api/daily', dailyTopRouter)
+app.use('/api/bot', botRouter)
 
 module.exports = app

@@ -4,9 +4,9 @@
 const express = require('express')
 const router = express.Router()
 
-const DailyTopController = require('../../controllers/DailyTopController')
+const BotController = require('../../controllers/BotController')
 
 // Index route
-router.get('/', DailyTopController.index)
+router.get('/', BotController.index)
 
 module.exports = router

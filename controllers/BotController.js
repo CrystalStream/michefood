@@ -1,7 +1,7 @@
 /**
 * PlacesController
 */
-const debug = require('debug')('michefood:ctrl:daily-top-ctrl')
+const debug = require('debug')('michefood:ctrl:botctrl')
 const models = require('../db/database').models
 
 /**
@@ -17,7 +17,7 @@ function index (_, res) {
     res.json(data)
   })
     .catch(function (err) {
-      debug('Error - DailyTopController@index: ', err)
+      debug('Error - BotController@index: ', err)
       res.json({ message: 'Error on index daily top', error: err })
     })
 }
