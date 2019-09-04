@@ -1,7 +1,7 @@
 /**
 * PlacesController
 */
-const debug = require('debug')('michefood:ctrl:botctrl')
+const debug = require('debug')('michefood:ctrl:bot-ctrl')
 const models = require('../db/database').models
 
 /**
@@ -11,11 +11,12 @@ const models = require('../db/database').models
  * @returns {Places[]} data
  */
 function index (_, res) {
-  const promise = models.PlacesModel.aggregate().sample(3).exec()
+  const promise = models.PlaceModel.aggregate().sample(5).exec()
 
-  return promise.then(function (data) {
-    res.json(data)
-  })
+  return promise
+    .then(function (data) {
+      res.json(data)
+    })
     .catch(function (err) {
       debug('Error - BotController@index: ', err)
       res.json({ message: 'Error on index daily top', error: err })

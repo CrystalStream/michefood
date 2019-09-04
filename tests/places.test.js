@@ -6,37 +6,29 @@ const chaiHttp = require('chai-http')
 
 const testHelper = require('./test-helper')
 const server = require('../app')
-const Place = require('../db/models/Place')
 const expect = chai.expect
 
 chai.use(chaiHttp)
 
 describe('Place', () => {
   before(async () => {
-    // Start the db
+    // Start and seed the db
     await testHelper.startDB()
   })
 
-  after(() => {
-    // Stop the db
-    testHelper.stopDB()
-  })
-
-  beforeEach((done) => {
-    // clean up the db
-    Place.deleteMany({}, (err) => {
-      done()
-    })
+  after(async () => {
+    // Stop and clear the db
+    await testHelper.stopDB()
   })
 
   describe('/GET Place', () => {
     it('should return a list of all places', (done) => {
       chai.request(server)
         .get('/api/places')
-        .end((err, res, body) => {
+        .end((err, res) => {
           expect(err).to.be.null
           expect(res).to.have.status(200)
-          expect(res.body).to.have.lengthOf(0)
+          expect(res.body).to.have.lengthOf(10)
           done()
         })
     })
@@ -79,7 +71,7 @@ describe('Place', () => {
           requester
             .put('/api/places/'+ id)
             .send({ name: "Carnes asadas nomas" })
-            .end((err, res) => {
+            .end((err, _) => {
               expect(err).to.be.null
               requester
                 .get('/api/places/'+ id)
