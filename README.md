@@ -6,6 +6,7 @@
 |      lib     |  version |
 |:-------------|:--------:|
 | Express      | `4.16.1` |
+| Mongoose     | `5.6.11` |
 
 # Development
 
@@ -13,7 +14,7 @@
 
 2.- Install all the dependencies: `npm install`
 
-3.- Create your own `env` file: `mv .env.example .env`
+3.- Create your own `env` file: `cp .env.example .env`
 
 4.- Run it: `npm start`
 
