@@ -31,5 +31,10 @@
     "exclude": [
       "**/test/**"
     ]
+  },
+  "standard": {
+    "ignore": [
+      "**/tests/"
+    ]
   }
 }
