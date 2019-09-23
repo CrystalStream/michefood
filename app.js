@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', homeRouter)
+app.use('', homeRouter)
 app.use('/api/places', placesRouter)
 app.use('/api/bot', botRouter)
 

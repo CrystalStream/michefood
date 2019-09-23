@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "start": "DEBUG=michefood:* node ./bin/www",
+    "dev": "DEBUG=michefood:* nodemon ./bin/www",
     "lint": "standard",
     "test": "mocha ./tests --timeout 10000 -C --full-trace --exit",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test",
