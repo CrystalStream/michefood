@@ -1,12 +1,12 @@
 /**
-* Bot routes
+* Home routes
 */
 const express = require('express')
 const router = express.Router()
 
-const BotController = require('../../controllers/BotController')
+const HomeController = require('../controllers/HomeController')
 
 // Index route
-router.get('/', BotController.index)
+router.get('/', HomeController.index)
 
 module.exports = router
