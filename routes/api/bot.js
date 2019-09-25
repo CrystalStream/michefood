@@ -7,6 +7,6 @@ const router = express.Router()
 const BotController = require('../../controllers/BotController')
 
 // Index route
-router.get('/', BotController.index)
+router.post('/', BotController.index)
 
 module.exports = router
