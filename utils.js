@@ -4,7 +4,9 @@
 
 
  function validateFbURL(url) {
-   return true
+  const pattern = new RegExp('^(https?:\/\/www.facebook.com/.*)','gi')
+
+  return pattern.test(url.replace(/(<?>?)/g, ''))
  }
 
  module.exports = {

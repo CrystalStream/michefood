@@ -38,13 +38,19 @@ async function index (req, res) {
       switch (action) {
 
         case 'add':
-          const fbUrl = body[1]
+          const fbUrl = body[0]
           // validate url
           const validUrl = utils.validateFbURL(fbUrl)
           if (validUrl) {
             const newlyPlace = await FacebookService.addPlace(fbUrl)
-            const message = `Listo! Se agrego ${newlyPlace.name} a nuestra lista de lugares. Gracias por contribuir! :michelove:`
+            const message = `
+              Listo!
+              Se agrego ${newlyPlace.name} a nuestra lista de lugares.
+              Gracias por contribuir! :michelove:
+            `
             SlackService.sendBotResponse(message, channel)
+          } else {
+            SlackService.sendBotResponse('Lo siento, no pude con ese facebok :sad: ', channel)
           }
           break
 
