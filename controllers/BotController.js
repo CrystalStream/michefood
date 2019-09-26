@@ -2,7 +2,6 @@
 * BotController
 */
 const debug = require('debug')('michefood:ctrl:bot-ctrl')
-const models = require('../db/database').models
 const SlackService = require('../services/SlackService')
 const FacebookService = require('../services/FacebookService')
 const utils = require('../utils')
@@ -13,51 +12,62 @@ const utils = require('../utils')
  * @returns {Places[]} data
  */
 async function index (req, res) {
-
   // Handler for the check route on slack
   if (req.body.challenge) {
     res.send({ 'challenge': req.body.challenge })
     return
   }
 
-  let { event: { type, text, channel }} = req.body
+  // Handle the bot responses when direct message
+  if (req.body.event.subtype || req.body.event.type !== 'message') {
+    res.sendStatus(200)
+    return
+  }
+
+  let { event: { text, channel }} = req.body
 
   // inmediate response for slack bot
   res.sendStatus(200)
 
-  if (type === 'app_mention') {
-    const commands = text.split(' ')
-    if (commands.length > 2) {
-      const [, action, ...body ] = commands
+  const commands = text.split(' ')
 
-      if (!body.length) {
-        SlackService.sendBotResponse('Necesito mas informacion :mestasenojando:', channel)
+  // Not enough info
+  if (!(commands.length > 1)) {
+    SlackService.sendBotResponse('Necesito mas informacion :mestasenojando:', channel)
+    return
+  }
+
+  switch (commands[0]) {
+    case 'add':
+      const fbUrl = commands[1].replace(/(<?>?)/g, '')
+      const validUrl = utils.validateFbURL(fbUrl)
+
+      // Invalid url send response to user
+      if (!validUrl) {
+        SlackService.sendBotResponse('La url no es de fb :mestasenojando:', channel)
         return
       }
 
-      switch (action) {
-
-        case 'add':
-          const fbUrl = body[0].replace(/(<?>?)/g, '')
-          // validate url
-          const validUrl = utils.validateFbURL(fbUrl)
-          if (validUrl) {
-            const newlyPlace = await FacebookService.addPlace(fbUrl)
-            const message = `
-              Listo!\nSe agrego ${newlyPlace.name} a nuestra lista de lugares.\nGracias por contribuir! :michelove:
-            `
-            SlackService.sendBotResponse(message, channel)
-          } else {
-            SlackService.sendBotResponse('Lo siento, no pude con ese facebok :sad: ', channel)
-          }
-          break
-
-        default:
-          SlackService.sendBotResponse('Opciones disponibles: <list>', channel)
+      try {
+        const newlyPlace = await FacebookService.addPlace(fbUrl)
+        // Error registering the place
+        if (!newlyPlace) {
+          SlackService.sendBotResponse('Lo siento, no jalo ese facebok :sad:', channel)
+          return
+        }
+        const message = `
+          Listo!\nSe agrego ${newlyPlace.name} a nuestra lista de lugares.\nGracias por contribuir! :michelove:
+        `
+        SlackService.sendBotResponse(message, channel)
+      } catch (error) {
+        debug(error)
+        SlackService.sendBotResponse(':sad:   :sad:   :sad:', channel)
       }
-    } else {
-      SlackService.sendBotResponse('Intentalo otra vez :sad:', channel)
-    }
+      break
+
+    default:
+      SlackService.sendBotResponse('Opciones disponibles:\n' + utils.BOT_OPTIONS.join('\n'), channel)
+      break
   }
   // const promise = models.PlaceModel.aggregate().sample(5).exec()
 

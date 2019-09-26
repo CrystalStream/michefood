@@ -7,7 +7,7 @@ const models = require('../db/database').models
 
 
 graph.setVersion(process.env.FB_GRAPH_VER || '4.0');
-graph.setAccessToken("EAABzzb19wKwBANid33KmZAGXhS91kjk5vAYvhyH27GaCkYj9n00ubMGatoQAFEWbstpt3lQil2ow2ZAnLeo6XBksgKsZBkZCYp80hQdyKfqmnwo3EEmcpMmdaVZAhESSJbLRqcoyGY7xY4ZBSdGK2y7GImtDKs1kf5GI6DBLZBldre3kkEcZBWzdaiPnpJspTOpaVCTQZBdhGSAJDVO8Ybjc71YETIW1cClvGJqHvhqhgZCgZDZD");
+graph.setAccessToken("EAABzzb19wKwBALZAJgtYOg1PACHv3RtyytdJAK9wogZB02chQADMBw5v2ByBD2mkxUXjanWCdoZBZCvjxJ7l1rjxQ6Pjg8MEZBx8FZBHYe3DZC89yfNKGZCo04yJhbqQ0ZB14UpuqZApmMVl3NiKKWnF8JiXMXVi4lA4vJZBtDEhHUFNVZC6ZBZAKASK0fpNOgwZB4k1ZBQ53puoql2w2OFLem53BbZBnfhZC4wuAj5D3ZCIVYWIkRtmgZDZD");
 
 async function addPlace(placeUrl) {
   const url = new URL(placeUrl)
@@ -20,7 +20,7 @@ async function addPlace(placeUrl) {
       })
       .catch(function (err) {
         debug('Error - FacebookService@create: ', err)
-        reject({ message: 'Error on create places from fb', error: err })
+        reject(null)
       })
   })
 }
@@ -53,6 +53,9 @@ function getPlaceFromFb(url) {
           resolve(place)
         })
       })
+      .catch(error => {
+        reject(error)
+      })
   })
 }
 
@@ -65,7 +68,6 @@ function getPlaceID(identifier) {
         const place = res.data[0] // Default to first match
         resolve(place.id)
       }
-
     })
   })
 }
