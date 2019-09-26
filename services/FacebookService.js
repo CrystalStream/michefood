@@ -13,8 +13,15 @@ async function addPlace(placeUrl) {
   const url = new URL(placeUrl)
   const place = await getPlaceFromFb(url)
   return new Promise((resolve, reject) => {
-    if (!place) reject({})
-    resolve({ name: place.name })
+    if (!place) reject(null)
+    models.PlaceModel.create(place)
+      .then(function (data) {
+        resolve(data)
+      })
+      .catch(function (err) {
+        debug('Error - FacebookService@create: ', err)
+        reject({ message: 'Error on create places from fb', error: err })
+      })
   })
 }
 
@@ -43,15 +50,7 @@ function getPlaceFromFb(url) {
             phone: res.phone,
             address: res.single_line_address
           }
-
-          models.PlaceModel.create(place)
-            .then(function (data) {
-              resolve(data)
-            })
-            .catch(function (err) {
-              debug('Error - FacebookService@create: ', err)
-              reject({ message: 'Error on create places from fb', error: err })
-            })
+          resolve(place)
         })
       })
   })

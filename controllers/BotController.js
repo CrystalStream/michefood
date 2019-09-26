@@ -44,9 +44,7 @@ async function index (req, res) {
           if (validUrl) {
             const newlyPlace = await FacebookService.addPlace(fbUrl)
             const message = `
-              Listo!
-              Se agrego ${newlyPlace.name} a nuestra lista de lugares.
-              Gracias por contribuir! :michelove:
+              Listo!\nSe agrego ${newlyPlace.name} a nuestra lista de lugares.\nGracias por contribuir! :michelove:
             `
             SlackService.sendBotResponse(message, channel)
           } else {
