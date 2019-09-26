@@ -39,7 +39,7 @@ async function index (req, res) {
 
   switch (commands[0]) {
     case 'add':
-      const fbUrl = commands[1].replace(/(<?>?)/g, '')
+      const fbUrl = commands[1].replace(/(<?>?\d?)/g, '')
       const validUrl = utils.validateFbURL(fbUrl)
 
       // Invalid url send response to user
