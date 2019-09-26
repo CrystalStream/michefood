@@ -38,7 +38,7 @@ async function index (req, res) {
       switch (action) {
 
         case 'add':
-          const fbUrl = body[0]
+          const fbUrl = body[0].replace(/(<?>?)/g, '')
           // validate url
           const validUrl = utils.validateFbURL(fbUrl)
           if (validUrl) {
