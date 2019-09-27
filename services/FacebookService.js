@@ -5,9 +5,8 @@ const graph = require('fbgraph')
 const debug = require('debug')('michefood:service:fb')
 const models = require('../db/database').models
 
-
 graph.setVersion(process.env.FB_GRAPH_VER || '4.0');
-graph.setAccessToken("EAABzzb19wKwBALZAJgtYOg1PACHv3RtyytdJAK9wogZB02chQADMBw5v2ByBD2mkxUXjanWCdoZBZCvjxJ7l1rjxQ6Pjg8MEZBx8FZBHYe3DZC89yfNKGZCo04yJhbqQ0ZB14UpuqZApmMVl3NiKKWnF8JiXMXVi4lA4vJZBtDEhHUFNVZC6ZBZAKASK0fpNOgwZB4k1ZBQ53puoql2w2OFLem53BbZBnfhZC4wuAj5D3ZCIVYWIkRtmgZDZD");
+graph.setAccessToken(process.env.FB_APP_TOKEN);
 
 async function addPlace(placeUrl) {
   const url = new URL(placeUrl)
