@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 
 const placeSchema = new mongoose.Schema({
-  name: {
-    type: String
+  name: String,
+  description: String,
+  cover: String,
+  facebookUrl: {
+    type: String,
+    unique: true
   },
-  description: {
-    type: String
-  },
-  images: [String],
-  facebookUrl: String
+  phone: String,
+  address: String
 })
 
 const Place = mongoose.model('Place', placeSchema)

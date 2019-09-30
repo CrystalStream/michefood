@@ -1,12 +1,18 @@
 /**
  * Utils
- */
+*/
 
+const BOT_OPTIONS = [
+  'add'
+]
 
- function validateFbURL(url) {
-   return true
- }
+function validateFbURL(url) {
+  const pattern = new RegExp('^(https?:\/\/www.facebook.com\/.{3,})','gi')
 
- module.exports = {
+  return pattern.test(url)
+}
+
+module.exports = {
+  BOT_OPTIONS,
   validateFbURL
- }
+}
