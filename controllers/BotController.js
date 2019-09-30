@@ -11,7 +11,7 @@ const utils = require('../utils')
  * @param {res} res
  * @returns {Places[]} data
  */
-async function index (req, res) {
+async function create (req, res) {
   // Handler for the check route on slack
   if (req.body.challenge) {
     res.send({ 'challenge': req.body.challenge })
@@ -60,27 +60,36 @@ async function index (req, res) {
         `
         SlackService.sendBotResponse(message, channel)
       } catch (error) {
-        debug(error)
-        SlackService.sendBotResponse(':sad:   :sad:   :sad:', channel)
+        debug('Error - BotController@create: ', error.errmsg)
+        if (/duplicate key/.test(error.errmsg)) {
+          SlackService.sendBotResponse('Lo siento! :sad:\nYa tenemos ese lugar registrado, intenta con otro :pig-oink: ', channel)
+        } else {
+          SlackService.sendBotResponse(':sad:   :sad:   :sad:', channel)
+        }
       }
       break
+
+    // TODO: Add more handler for more actions
 
     default:
       SlackService.sendBotResponse('Opciones disponibles:\n' + utils.BOT_OPTIONS.join('\n'), channel)
       break
   }
-  // const promise = models.PlaceModel.aggregate().sample(5).exec()
-
-  // return promise
-  //   .then(function (data) {
-  //     res.json(data)
-  //   })
-  //   .catch(function (err) {
-  //     debug('Error - BotController@index: ', err)
-  //     res.json({ message: 'Error on index daily top', error: err })
-  //   })
 }
 
+// function index () {
+//   const promise = models.PlaceModel.aggregate().sample(5).exec()
+
+//   return promise
+//     .then(function (data) {
+//       res.json(data)
+//     })
+//     .catch(function (err) {
+//       debug('Error - BotController@index: ', err)
+//       res.json({ message: 'Error on index daily top', error: err })
+//     })
+// }
+
 module.exports = {
-  index
+  create
 }

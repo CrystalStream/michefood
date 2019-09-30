@@ -4,7 +4,10 @@ const placeSchema = new mongoose.Schema({
   name: String,
   description: String,
   cover: String,
-  facebookUrl: String,
+  facebookUrl: {
+    type: String,
+    unique: true
+  },
   phone: String,
   address: String
 })

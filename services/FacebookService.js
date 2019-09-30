@@ -18,8 +18,7 @@ async function addPlace(placeUrl) {
         resolve(data)
       })
       .catch(function (err) {
-        debug('Error - FacebookService@create: ', err)
-        reject(null)
+        reject(err)
       })
   })
 }

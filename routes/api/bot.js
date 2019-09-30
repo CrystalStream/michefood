@@ -6,7 +6,8 @@ const router = express.Router()
 
 const BotController = require('../../controllers/BotController')
 
-// Index route
-router.post('/', BotController.index)
+// Create route (Slack)
+router.post('/', BotController.create)
+
 
 module.exports = router
