@@ -12,7 +12,7 @@ const utils = require('../utils')
  * @returns {Places[]} data
  */
 async function create (req, res) {
-  // Handler for the check route on slack
+  // Handler for server validation on slack
   if (req.body.challenge) {
     res.send({ 'challenge': req.body.challenge })
     return
@@ -59,8 +59,10 @@ async function create (req, res) {
           Listo!\nSe agrego ${newlyPlace.name} a nuestra lista de lugares.\nGracias por contribuir! :michelove:
         `
         SlackService.sendBotResponse(message, channel)
+
       } catch (error) {
         debug('Error - BotController@create: ', error.errmsg)
+
         if (/duplicate key/.test(error.errmsg)) {
           SlackService.sendBotResponse('Lo siento! :sad:\nYa tenemos ese lugar registrado, intenta con otro :pig-oink: ', channel)
         } else {
@@ -76,19 +78,6 @@ async function create (req, res) {
       break
   }
 }
-
-// function index () {
-//   const promise = models.PlaceModel.aggregate().sample(5).exec()
-
-//   return promise
-//     .then(function (data) {
-//       res.json(data)
-//     })
-//     .catch(function (err) {
-//       debug('Error - BotController@index: ', err)
-//       res.json({ message: 'Error on index daily top', error: err })
-//     })
-// }
 
 module.exports = {
   create
