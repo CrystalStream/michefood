@@ -21,16 +21,19 @@ describe('Bot', () => {
     await testHelper.stopDB()
   })
 
-  describe('/GET Bot', () => {
-    it('should return a list of places', (done) => {
-      chai.request(server)
-        .get('/api/bot')
-        .end((err, res) => {
-          expect(err).to.be.null
-          expect(res).to.have.status(200)
-          expect(res.body).to.have.lengthOf(5)
-          done()
-        })
+  describe('/POST Bot', () => {
+    describe('Slack server validation', () => {
+      it('should response with the challenge parameter', (done) => {
+        chai.request(server)
+          .post('/api/bot')
+          .send({ challenge: '1234challenge' })
+          .end((err, res) => {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            expect(res.body).to.deep.equal({ challenge: '1234challenge' })
+            done()
+          })
+      })
     })
   })
 })
