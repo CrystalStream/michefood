@@ -23,7 +23,6 @@ async function create (req, res) {
     res.sendStatus(200)
     return
   }
-
   let { event: { text, channel }} = req.body
 
   // inmediate response for slack bot
