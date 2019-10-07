@@ -9,7 +9,6 @@ const debug = require('debug')('michefood:ctrl:home-ctrl')
  * @param {res} res
  */
 function index (_, res) {
-  console.log('entro al index')
   res.render('home/index', {})
 }
 
