@@ -7,8 +7,8 @@
     "dev": "DEBUG=michefood:* nodemon ./bin/www",
     "lint": "standard",
     "test": "NODE_ENV=test mocha ./tests --timeout 10000 -C --full-trace --exit",
-    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "coverage:open": "nyc --reporter=lcov --reporter=text-lcov npm test && open ./coverage/lcov-report/index.html"
+    "cov": "nyc --reporter=lcov --reporter=text-lcov npm test",
+    "cov:open": "nyc --reporter=lcov --reporter=text-lcov npm test && open ./coverage/lcov-report/index.html"
   },
   "dependencies": {
     "cookie-parser": "1.4.4",
