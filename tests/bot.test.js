@@ -4,7 +4,6 @@ process.env.NODE_ENV = 'test'
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const chaiNock = require('chai-nock')
-const nock = require('nock')
 
 const testHelper = require('./test-helper')
 const server = require('../app')
@@ -41,10 +40,7 @@ describe('Bot', () => {
 
     describe('Slack bot responses', () => {
       it('should respond with a 200 status only when subtype parameter is on the request', (done) => {
-        const slackMessageApiMock = nock('https://slack.com/api/chat.postMessage')
-          .post('/')
-          .query(true)
-          .reply(200, { text: 'message published' })
+        const slackMessageApiMock = testHelper.mockSlackInternalRequest('get')
 
         chai.request(server)
           .post('/api/bot')
@@ -58,10 +54,7 @@ describe('Bot', () => {
       })
 
       it('should respond with a 200 status only when type parameter is different "message"', (done) => {
-        const slackMessageApiMock = nock('https://slack.com/api/chat.postMessage')
-          .post('/')
-          .query(true)
-          .reply(200, { text: 'message published' })
+        const slackMessageApiMock = testHelper.mockSlackInternalRequest('get')
 
         chai.request(server)
           .post('/api/bot')
@@ -77,16 +70,7 @@ describe('Bot', () => {
 
     describe('Slack bot not enough info', () => {
       it('should response with a message publish to the channel', (done) => {
-        const slackMessageApiMock = nock('https://slack.com/api/')
-          .get('/chat.postMessage')
-          .reply(() => {
-            return [
-              201,
-              {
-                statusCode: 200
-              },
-            ]
-          })
+        const slackMessageApiMock = testHelper.mockSlackInternalRequest('post')
 
         chai.request(server)
           .post('/api/bot')
@@ -108,16 +92,7 @@ describe('Bot', () => {
     describe('Slack bot trying add a place with invalid url', () => {
       it('Should not add a place and send a message to slack', (done) => {
         const requester = chai.request(server).keepOpen()
-        const slackMessageApiMock = nock('https://slack.com/api/')
-          .get('/chat.postMessage')
-          .reply(() => {
-            return [
-              201,
-              {
-                statusCode: 200
-              },
-            ]
-          })
+        const slackMessageApiMock = testHelper.mockSlackInternalRequest('post')
 
         requester
           .post('/api/bot')
@@ -146,38 +121,9 @@ describe('Bot', () => {
 
     describe('Slack bot add a place from facebook url', () => {
       it('Should add a place and send a message to slack', (done) => {
-        const slackMessageApiMock = nock('https://slack.com/api/')
-          .get('/chat.postMessage')
-          .reply(() => {
-            return [
-              201,
-              {
-                statusCode: 200
-              },
-            ]
-          })
-        const fbMock = nock('https://graph.facebook.com/')
-          .get(/\/v4.0\/+[0-9]*$/gm)
-          .query(true)
-          .reply(200, {
-            name: 'tacos ahumados',
-            description: 'taco bueno',
-            cover: {
-              source: 'imagenchida.png'
-            },
-            link: 'https:fburl.com/tacosahumados',
-            phone: '123123124',
-            single_line_address: 'San fernando'
-          })
-
-        const fbIDMock = nock('https://graph.facebook.com/v4.0/')
-          .get('/search')
-          .query(true)
-          .reply(200, { data: [
-            {
-              id: '222222222'
-            }
-          ]})
+        const slackMessageApiMock = testHelper.mockSlackInternalRequest('post')
+        const fbMock = testHelper.mockFbPlaceInternalRequest()
+        const fbIDMock = testHelper.mockFbIDInternalRequest()
 
         chai.request(server)
           .post('/api/bot')
@@ -211,25 +157,8 @@ describe('Bot', () => {
 
     describe('Slack bot wrong option', () => {
       it('should send a message with the valid options and not add any place', (done) => {
-        const slackMessageApiMock = nock('https://slack.com/api/')
-          .get('/chat.postMessage')
-          .reply(() => {
-            return [
-              201,
-              {
-                statusCode: 200
-              },
-            ]
-          })
-
-        const fbIDMock = nock('https://graph.facebook.com/v4.0/')
-          .get('/search')
-          .query(true)
-          .reply(200, { data: [
-            {
-              id: '222222222'
-            }
-          ]})
+        const slackMessageApiMock = testHelper.mockSlackInternalRequest('post')
+        const fbIDMock = testHelper.mockFbIDInternalRequest()
 
         chai.request(server)
           .post('/api/bot')
