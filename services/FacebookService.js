@@ -2,17 +2,16 @@
  * Facebook Service
  */
 const graph = require('fbgraph')
-const debug = require('debug')('michefood:service:fb')
 const models = require('../db/database').models
 
-graph.setVersion(process.env.FB_GRAPH_VER || '4.0');
-graph.setAccessToken(process.env.FB_APP_TOKEN);
+graph.setVersion(process.env.FB_GRAPH_VER || '4.0')
+graph.setAccessToken(process.env.FB_APP_TOKEN)
 
-async function addPlace(placeUrl) {
+async function addPlace (placeUrl) {
   const url = new URL(placeUrl)
   const place = await getPlaceFromFb(url)
   return new Promise((resolve, reject) => {
-    if (!place) reject(null)
+    if (!place) reject(new Error('Error adding a place from fb'))
     models.PlaceModel.create(place)
       .then(function (data) {
         resolve(data)
@@ -23,7 +22,7 @@ async function addPlace(placeUrl) {
   })
 }
 
-function getPlaceFromFb(url) {
+function getPlaceFromFb (url) {
   const urlIdentifier = url.pathname.split('/')[1]
   return new Promise((resolve, reject) => {
     getPlaceID(urlIdentifier)
@@ -57,7 +56,7 @@ function getPlaceFromFb(url) {
   })
 }
 
-function getPlaceID(identifier) {
+function getPlaceID (identifier) {
   return new Promise((resolve, reject) => {
     graph.get(`search?type=place&q=${identifier}`, (error, res) => {
       if (error) reject(error)

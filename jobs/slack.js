@@ -7,12 +7,11 @@ const SlackService = require('../services/SlackService')
 const models = require('../db/models')
 const utils = require('../utils')
 
-const LUNCH_TIME = process.env.SLACK_JOB_SCHEDULE || '00 14 * * 1-5'
-const CHANNEL_ID =  process.env.SLACK_CHANNEL_ID || 'CN4A5PB24' //'CBXLG6XCG'
+const LUNCH_TIME = process.env.SLACK_JOB_SCHEDULE || '00 14 * * 1-5' // '* * * * 1-5'
+const CHANNEL_ID = process.env.SLACK_CHANNEL_ID || 'CN4A5PB24' // 'CBXLG6XCG'
 
 // Publish information each day at lunch time (exclude sat and sun)
-const slackCron = cron.schedule('* * * * 1-5', async function () {
-
+const slackCron = cron.schedule(LUNCH_TIME, async function () {
   // Get 5 random places
   const places = await models.PlaceModel.aggregate().sample(5)
 
@@ -21,7 +20,6 @@ const slackCron = cron.schedule('* * * * 1-5', async function () {
 
   // Send to slack
   SlackService.sendBotResponse(message, CHANNEL_ID, true)
-
 }, {
   scheduled: false
 })

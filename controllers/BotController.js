@@ -14,7 +14,7 @@ const utils = require('../utils')
 async function create (req, res) {
   // Handler for server validation on slack
   if (req.body.challenge) {
-    res.send({ 'challenge': req.body.challenge })
+    res.send({ challenge: req.body.challenge })
     return
   }
 
@@ -23,7 +23,7 @@ async function create (req, res) {
     res.sendStatus(200)
     return
   }
-  let { event: { text, channel }} = req.body
+  const { event: { text, channel } } = req.body
 
   // inmediate response for slack bot
   res.sendStatus(200)
@@ -37,7 +37,7 @@ async function create (req, res) {
   }
 
   switch (commands[0]) {
-    case 'add':
+    case 'add': {
       const fbUrl = commands[1].replace(/(<?>?\d?)/g, '')
       const validUrl = utils.validateFbURL(fbUrl)
 
@@ -58,7 +58,6 @@ async function create (req, res) {
           Listo!\nSe agrego ${newlyPlace.name} a nuestra lista de lugares.\nGracias por contribuir! :michelove:
         `
         SlackService.sendBotResponse(message, channel)
-
       } catch (error) {
         debug('Error - BotController@create: ', error.errmsg)
 
@@ -69,9 +68,8 @@ async function create (req, res) {
         }
       }
       break
-
+    }
     // TODO: Add more handler for more actions
-
     default:
       SlackService.sendBotResponse('Opciones disponibles:\n' + utils.BOT_OPTIONS.join('\n'), channel)
       break

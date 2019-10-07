@@ -6,10 +6,10 @@ const https = require('https')
 
 const SLACK_CHAT_URL = 'https://slack.com/api/chat.postMessage'
 
-function sendBotResponse(text, channel, withBlocks = false) {
+function sendBotResponse (text, channel, withBlocks = false) {
   let data = JSON.stringify({
     text,
-    channel,
+    channel
   })
 
   // Blocks for slack use a different param
@@ -25,7 +25,7 @@ function sendBotResponse(text, channel, withBlocks = false) {
     headers: {
       'Content-Type': 'application/json',
       'Content-Length': Buffer.byteLength(data),
-      'Authorization': `Bearer ${process.env.SLACK_BOT_TOKEN}`
+      Authorization: `Bearer ${process.env.SLACK_BOT_TOKEN}`
     }
   }
 

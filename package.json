@@ -40,7 +40,8 @@
   },
   "standard": {
     "ignore": [
-      "**/tests/"
+      "**/tests/",
+      "**/public/"
     ]
   }
 }

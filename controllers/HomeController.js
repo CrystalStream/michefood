@@ -1,7 +1,6 @@
 /**
 * HomeController
 */
-const debug = require('debug')('michefood:ctrl:home-ctrl')
 
 /**
  * Render the home landing page

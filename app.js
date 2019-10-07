@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Views
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
 // Middleware

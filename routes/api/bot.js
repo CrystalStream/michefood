@@ -9,5 +9,4 @@ const BotController = require('../../controllers/BotController')
 // Create route (Slack)
 router.post('/', BotController.create)
 
-
 module.exports = router

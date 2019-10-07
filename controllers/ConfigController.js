@@ -1,7 +1,6 @@
 /**
 * ConfigController
 */
-const debug = require('debug')('michefood:ctrl:config-ctrl')
 const slackJob = require('../jobs/slack')
 
 /**
