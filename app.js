@@ -37,6 +37,8 @@ app.use('/api/bot', botRouter)
 app.use('/config', configRouter)
 
 // Jobs
-slackJob.start()
+if (process.env.NODE_ENV === 'production') {
+  slackJob.start()
+}
 
 module.exports = app
